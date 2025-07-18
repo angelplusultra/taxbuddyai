@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { UploadedFile } from "@/app/page";
+import { UploadedFile } from "@/components/app-steps";
 
 const TaxDocumentUpload: React.FC<{
   setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFile[]>>;
