@@ -72,7 +72,47 @@ const styles = StyleSheet.create({
   },
 });
 
-const Tax1040Form: React.FC<Tax1040FormProps> = ({ taxpayer, taxData }) => (
+const Tax1040Form: React.FC<Tax1040FormProps> = ({ taxpayer, taxData }) => 
+  {
+    const totalWagesFormatted = taxData.totalWages.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const totalNonemployeeCompensationFormatted = taxData.totalNonemployeeCompensation.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const totalInterestIncomeFormatted = taxData.totalInterestIncome.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const totalFederalIncomeTaxWithheldFormatted = taxData.totalFederalIncomeTaxWithheld.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const taxLiabilityFormatted = taxData.taxLiability.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const taxableIncomeFormatted = taxData.taxableIncome.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const grossIncomeFormatted = taxData.grossIncome.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const refundOrAmountOwedFormatted = taxData.refundOrAmountOwed.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    const deductionFormatted = taxData.deduction.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD"
+    });
+    
+    
+    return (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.header}>Form 1040 - U.S. Individual Income Tax Return</Text>
@@ -96,19 +136,19 @@ const Tax1040Form: React.FC<Tax1040FormProps> = ({ taxpayer, taxData }) => (
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Wages, salaries, tips</Text>
-            <Text style={styles.tableCell}>${taxData.totalWages.toLocaleString()}</Text>
+            <Text style={styles.tableCell}>{totalWagesFormatted}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Nonemployee compensation (1099-NEC)</Text>
-            <Text style={styles.tableCell}>${taxData.totalNonemployeeCompensation.toLocaleString()}</Text>
+            <Text style={styles.tableCell}>{totalNonemployeeCompensationFormatted}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Interest income (1099-INT)</Text>
-            <Text style={styles.tableCell}>${taxData.totalInterestIncome.toLocaleString()}</Text>
+            <Text style={styles.tableCell}>{totalInterestIncomeFormatted}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.tableCell}>Gross income</Text>
-            <Text style={styles.tableCell}>${taxData.grossIncome.toLocaleString()}</Text>
+            <Text style={styles.tableCell}>{grossIncomeFormatted}</Text>
           </View>
         </View>
       </View>
@@ -116,30 +156,30 @@ const Tax1040Form: React.FC<Tax1040FormProps> = ({ taxpayer, taxData }) => (
         <Text style={styles.label}>Deductions</Text>
         <View style={styles.row}>
           <Text style={styles.col}>Standard Deduction</Text>
-          <Text style={styles.col}>${taxData.deduction.toLocaleString()}</Text>
+          <Text style={styles.col}>{deductionFormatted}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.col}>Taxable Income</Text>
-          <Text style={styles.col}>${taxData.taxableIncome.toLocaleString()}</Text>
+          <Text style={styles.col}>{taxableIncomeFormatted}</Text>
         </View>
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>Tax and Payments</Text>
         <View style={styles.row}>
           <Text style={styles.col}>Tax Liability</Text>
-          <Text style={styles.col}>${taxData.taxLiability.toLocaleString()}</Text>
+          <Text style={styles.col}>{taxLiabilityFormatted}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.col}>Federal Income Tax Withheld</Text>
-          <Text style={styles.col}>${taxData.totalFederalIncomeTaxWithheld.toLocaleString()}</Text>
+          <Text style={styles.col}>{totalFederalIncomeTaxWithheldFormatted}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.col}>Refund / Amount Owed</Text>
-          <Text style={styles.col}>{taxData.refundOrAmountOwed >= 0 ? `Refund: $${taxData.refundOrAmountOwed.toLocaleString()}` : `Owed: $${Math.abs(taxData.refundOrAmountOwed).toLocaleString()}`}</Text>
+          <Text style={styles.col}>{taxData.refundOrAmountOwed >= 0 ? `Refund: ${refundOrAmountOwedFormatted}` : `Owed: ${refundOrAmountOwedFormatted.replace("$-", "$")}`}</Text>
         </View>
       </View>
     </Page>
   </Document>
-);
+)};
 
 export default Tax1040Form; 
