@@ -8,10 +8,8 @@ Tax Buddy AI aims to:
 
 - Streamline the collection of personal and financial information required for tax filing.
 - Provide a guided, step-by-step experience for users, reducing confusion and errors.
-- Allow users to upload and manage tax documents securely.
 - Use AI to assist with document analysis, data extraction, and form pre-filling (future scope).
 - Generate and preview tax forms (such as the 1040) in PDF format.
-- Ensure data privacy and security throughout the process.
 
 ## Key Features
 
