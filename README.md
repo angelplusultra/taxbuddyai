@@ -18,26 +18,42 @@ Tax Buddy AI aims to:
 - **Personal Information Form:** Collects all necessary taxpayer and spouse details, with smart input formatting (e.g., SSN masking and formatting).
 - **Tax Document Upload:** Users can upload W-2s, 1099s, and other relevant tax documents.
 - **Step-by-Step Guidance:** The app provides a clear, multi-step process for entering information and uploading documents.
-- **AI Integration:** (Planned) Use of AI to extract data from uploaded documents and assist with tax form completion.
+- **AI Integration:** Use of AI to extract data from uploaded documents and assist with tax form completion.
 - **PDF Generation:** Preview and download completed tax forms in PDF format.
 - **Modern UI/UX:** Built with React, Next.js, and shadcn/ui for a clean, accessible, and responsive interface.
 
 ## Technology Stack
 
-- **Frontend:**
-  - React (with functional components and hooks)
-  - Next.js (App Router)
-  - TypeScript
-  - shadcn/ui (for UI components)
-  - Zod (for schema validation)
-  - React Hook Form (for form state management)
-- **Backend/Serverless:**
-  - Next.js API routes or server actions (for file uploads, AI integration, etc.)
-- **Other:**
-  - Lucide React (for icons)
-  - PostCSS, CSS Modules
+- React (with functional components and hooks)
+- Next.js (App Router)
+- Tailwind CSS
+- TypeScript
+- shadcn/ui (Component Library)
+- Zod (Schema Validation Library)
+- React Hook Form (Form State Management Library)
+- React PDF (PDF DOM Rendering)
+- PDF Parse
+- Zod Server Actions
+- Vercel AI SDK
+- Anthropic API
+- Langfuse (AI Observability and Prompt Management)
+- Lucide React (for icons)
 
 ## Getting Started
+
+### Environment Variables
+
+Inspect the `.env.example` file for required variables. Example:
+
+```bash
+ANTHROPIC_API_KEY="sk..."
+LANGFUSE_SECRET_KEY="sk..."
+LANGFUSE_PUBLIC_KEY="pk..."
+LANGFUSE_HOST="https://us.cloud.langfuse.com" # Or wherever your langfuse instance is hosted
+NODE_ENV="development"
+```
+
+### Setup Steps
 
 1. **Install dependencies:**
    ```bash
