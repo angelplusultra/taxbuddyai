@@ -21,6 +21,8 @@ import PersonalInfoForm from "@/components/personal-information-form";
 import { toast } from "sonner";
 import { useServerAction } from "zsa-react";
 import { uploadTaxDocumentsAction } from "@/actions/uploadTaxDocuments";
+import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import Tax1040Form from "@/components/Tax1040Form";
 
 type PersonalInfoFormData = {
   firstName: string;
@@ -56,6 +58,17 @@ export interface UploadedFile {
   status: "uploading" | "completed" | "error";
   progress: number;
 }
+interface TenFourtyData {
+    totalWages: number;
+    totalNonemployeeCompensation: number;
+    totalInterestIncome: number;
+    totalFederalIncomeTaxWithheld: number;
+    taxLiability: number;
+    taxableIncome: number;
+    grossIncome: number;
+    refundOrAmountOwed: number;
+    deduction: number;
+}
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoFormData | null>(
@@ -69,6 +82,8 @@ const Index = () => {
     withholding: number;
     refund: number;
   } | null>(null);
+
+  const [tenFourtyData, setTenFourtyData] = useState<TenFourtyData | null>(null);
 
   const handlePersonalInfoSubmit = (data: PersonalInfoFormData) => {
     setPersonalInfo(data);
@@ -105,6 +120,7 @@ const Index = () => {
       withholding: data.totalFederalIncomeTaxWithheld,
       refund: data.refundOrAmountOwed,
     });
+    setTenFourtyData(data);
     setCurrentStep(3);
   };
 
@@ -125,7 +141,17 @@ const Index = () => {
       description: "Review and calculate taxes",
     },
   ];
-
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    }
+  });
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -138,7 +164,7 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-foreground">
-                  AI Tax Agent
+                Tax Buddy AI
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   Automated Tax Return Preparation
@@ -161,10 +187,10 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex items-center justify-center space-x-8">
+          <div className="flex flex-wrap md:flex-nowrap items-center justify-center gap-4 md:gap-8">
             {steps.map((step, index) => (
-              <div key={step.number} className="flex items-center">
-                <div className="flex flex-col items-center">
+              <div key={step.number} className="flex items-center w-full md:w-auto">
+                <div className="flex flex-col items-center w-full">
                   <div
                     className={`
                       w-10 h-10 rounded-full flex items-center justify-center font-medium text-sm
@@ -185,9 +211,9 @@ const Index = () => {
                       step.number
                     )}
                   </div>
-                  <div className="mt-2 text-center">
-                    <p className="text-sm font-medium">{step.title}</p>
-                    <p className="text-xs text-muted-foreground">
+                  <div className="mt-2 text-center w-full">
+                    <p className="text-sm font-medium break-words">{step.title}</p>
+                    <p className="text-xs text-muted-foreground break-words">
                       {step.description}
                     </p>
                   </div>
@@ -195,7 +221,7 @@ const Index = () => {
                 {index < steps.length - 1 && (
                   <div
                     className={`
-                      w-16 h-px mx-4 mt-[-20px]
+                      hidden md:block w-16 h-px mx-4 mt-[-20px]
                       ${currentStep > step.number ? "bg-primary" : "bg-border"}
                     `}
                   />
@@ -259,7 +285,7 @@ const Index = () => {
             </div>
           )}
 
-          {currentStep === 3 && taxSummary && (
+          {currentStep === 3 && taxSummary && tenFourtyData && personalInfo && (
             <div className="space-y-6">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-2">
@@ -270,7 +296,7 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-6">
                 <Card className="border-success/20 bg-success/5">
                   <CardHeader>
                     <CardTitle className="text-success">Tax Summary</CardTitle>
@@ -335,17 +361,13 @@ const Index = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <Button className="w-full" variant="outline">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Download Form 1040
-                    </Button>
-                    <Button className="w-full bg-gradient-to-r from-primary to-primary-light">
-                      E-File Return
-                    </Button>
-                    <p className="text-xs text-muted-foreground text-center">
-                      *E-filing feature coming soon. Download and file manually
-                      for now.
-                    </p>
+
+                    <div style={{ width: '100%', maxWidth: '900px', margin: '0 auto', aspectRatio: '8.5/11', height: 'auto', minHeight: '400px' }}>
+                      <PDFViewer style={{ width: '100%', height: '100%', minHeight: '400px', border: 'none' }}>
+                        <Tax1040Form taxpayer={personalInfo} taxData={tenFourtyData} />
+                      </PDFViewer>
+                    </div>
+                    
                   </CardContent>
                 </Card>
               </div>
