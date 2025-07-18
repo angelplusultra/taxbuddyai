@@ -141,17 +141,6 @@ const Index = () => {
       description: "Review and calculate taxes",
     },
   ];
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'row',
-      backgroundColor: '#E4E4E4'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    }
-  });
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -159,7 +148,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary-light rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <Calculator className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
@@ -272,12 +261,11 @@ const Index = () => {
                 <Button
                   disabled={isPending || uploadedFiles.length === 0}
                   onClick={handleCalculateTaxes}
-                  className="bg-gradient-to-r from-primary to-primary-light"
                 >
                   {isPending ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="animate-spin" />
                   ) : (
-                    <Calculator className="h-4 w-4 mr-2" />
+                    <Calculator className="" />
                   )}
                   Calculate Taxes
                 </Button>
