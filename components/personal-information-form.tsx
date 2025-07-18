@@ -29,13 +29,12 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { User, Users, Home } from "lucide-react";
+import { User, Users, Home, Eye, EyeOff } from "lucide-react";
 
 const personalInfoSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  ssn: z
-    .string()
+  ssn: z.string()
     .regex(/^\d{3}-\d{2}-\d{4}$/, "SSN must be in format XXX-XX-XXXX"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   filingStatus: z.enum([
@@ -72,6 +71,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   onSubmit,
   initialData,
 }) => {
+  const [showSSN, setShowSSN] = React.useState(false);
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
@@ -156,6 +156,19 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
     "WY",
   ];
 
+  const formatSSN = (value: string) => {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, "");
+    // Format as XXX-XX-XXXX
+    let formatted = digits;
+    if (digits.length > 3 && digits.length <= 5) {
+      formatted = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    } else if (digits.length > 5) {
+      formatted = `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5, 9)}`;
+    }
+    return formatted;
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -214,7 +227,28 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                     <FormItem>
                       <FormLabel>Social Security Number *</FormLabel>
                       <FormControl>
-                        <Input placeholder="XXX-XX-XXXX" {...field} />
+                        <div className="relative flex justify-between items-center">
+                          <Input
+                            placeholder="XXX-XX-XXXX"
+                            {...field}
+                            type={showSSN ? "text" : "password"}
+                            onChange={e => {
+                              const formatted = formatSSN(e.target.value);
+                              field.onChange(formatted);
+                            }}
+                            maxLength={11} // 9 digits + 2 dashes
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            tabIndex={-1}
+                            onClick={() => setShowSSN((prev) => !prev)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary focus:outline-none"
+                            aria-label={showSSN ? "Hide SSN" : "Show SSN"}
+                          >
+                            {showSSN ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -266,7 +300,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                         </FormControl>
                         <SelectContent className="bg-popover">
                           <SelectItem value="single">Single</SelectItem>
-                          <SelectItem value="married-filing-jointly">
+                          {/* <SelectItem value="married-filing-jointly">
                             Married Filing Jointly
                           </SelectItem>
                           <SelectItem value="married-filing-separately">
@@ -277,7 +311,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
                           </SelectItem>
                           <SelectItem value="qualifying-widow">
                             Qualifying Widow(er)
-                          </SelectItem>
+                          </SelectItem> */}
                         </SelectContent>
                       </Select>
                       <FormMessage />
