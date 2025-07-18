@@ -60,11 +60,7 @@ Tax Buddy AI aims to:
 
 ## Future Roadmap
 
-- AI-powered document parsing and data extraction
+- Support for other filing statuses other than single
 - Support for additional tax forms and schedules
 - User authentication and secure data storage
 - Integration with e-filing services
-
-## License
-
-This project is for educational and demonstration purposes. Please review the code and adapt it for production use as needed.
