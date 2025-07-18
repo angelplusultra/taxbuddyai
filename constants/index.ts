@@ -26,7 +26,7 @@ export const TAX_BRACKETS: Record<
     { min: 243701, max: 609350, rate: 0.35 },
     { min: 609351, max: Infinity, rate: 0.37 },
   ],
-  "married-joint": [
+  "married-filing-jointly": [
     { min: 0, max: 23200, rate: 0.1 },
     { min: 23201, max: 94300, rate: 0.12 },
     { min: 94301, max: 201050, rate: 0.22 },
